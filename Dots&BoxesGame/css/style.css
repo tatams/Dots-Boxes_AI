@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped&family=Prompt&family=Tilt+Neon&display=swap');
+body {
+    padding: 10px;
+    margin: 0;   
+    background-color: #96d2be;
+	/* background-color: rgb(255, 240, 156); */
+    text-align: center;
+	font-family: 'IBM Plex Sans Thai Looped', sans-serif;
+	font-family: 'Prompt', sans-serif;
+	font-family: 'Tilt Neon', cursive;
+}
+
+.hind{
+	display: none;
+}
+
+.active{
+	/* color: rgb(94, 28, 124) !important; */
+	color: #f0822a !important;
+	/* color: #fa6f99 !important; */
+
+}
+
+.container{
+	padding-top: 10px;
+	
+}
+
+.option{
+	position: relative;
+	z-index: 1;
+}
+
+.game{
+	z-index: 0;
+}
+
+h1{
+	font-size: 100px;
+	/* background-image: conic-gradient(#553c9a, #ee4b2b, #00c2cb); */
+	background-image: conic-gradient(#e1ff5c, #e7a856, #64c712);
+	color: transparent;
+	background-clip: text;
+  -webkit-background-clip: text;
+}
+
+h2{
+	font-size: 40px;
+	justify-content: space-between;
+}
+
+.board_size{
+	font-size: 20px;
+	/* width: 100px; */
+	/* margin: 0 10vw; */
+	margin: 0px 30vw;
+	border-radius: 40px;
+	background-color:#f8f1e1;
+	line-height: 50px;
+	padding: 20px 0;
+	/* line-height:100px; */
+	/* display: flex;
+	align-items: center;
+	justify-content: center; */
+}
+
+.s3x3 {
+	color: #ba9c84;
+	font-size: 30px;
+	font-weight: bolder;
+	user-select: none;
+	/* margin: 0px 20vw; */
+	/* border-radius: 40px; */
+	/* background-color:mediumaquamarine; */
+}
+.s3x3:hover{
+	/* color: #e4b9f5; */
+	color: #efba49;
+	cursor: pointer;
+}
+
+.s5x5 {
+	color: #ba9c84;
+	font-size: 30px;
+	font-weight: bolder;
+	user-select: none;
+	/* margin: 0px 20vw; */
+	/* border-radius: 40px; */
+	/* background-color:mediumaquamarine; */
+}
+.s5x5:hover{
+	color: #efba49;
+	cursor: pointer;
+}
+
+.s7x7 {
+	color: #ba9c84;
+	font-size: 30px;
+	font-weight: bolder;
+	user-select: none;
+	/* margin: 0px 20vw; */
+	/* border-radius: 40px; */
+	/* background-color:mediumaquamarine; */
+}
+.s7x7:hover{
+	color: #efba49;
+	cursor: pointer;
+}
+
+.tool{
+	position: absolute;
+	bottom: 40px;
+	right: 40px;
+}
+
+.newgame{
+	text-transform: capitalize;
+	/* text-decoration: green wavy underline; */
+	padding: 15px;
+	color: #043783;
+	background-color: #1899D6;
+	font-weight: bold;
+	border-radius: 50%;
+}
+
+.newgame:hover{
+	filter: brightness(1.1);
+	cursor: pointer;
+}
+
+.player1{
+	margin: 0 auto;
+	color:tomato;
+	font-weight: bolder;
+	font-size: 25px;
+}
+
+.player2{
+	margin: 0 auto;
+	
+	color:seagreen;
+	font-weight: bolder;
+	font-size: 25px;
+}
+
+#turn{
+	margin: 0 auto;
+	color:darkgoldenrod;
+	font-size: 20px;
+}
+
+.box{
+	width: 60px;
+	height: 60px;
+	position: absolute;
+	/* background-color: white; */
+	background-color: rgb(255, 240, 156);
+	line-height: 60px;
+}
+
+
+
+
+.dot{
+	position: absolute;
+	height: 15px;
+	width: 15px;
+	border-radius: 100%;
+	background-color: rgb(59, 55, 55);		
+	z-index: 1000;	
+}
+
+.line{
+	position: absolute;
+	/* background-color: whitesmoke; */
+	background-color: rgb(255, 231, 125);	
+	cursor: pointer;
+	z-index: 1;	
+
+}
+
+.lineh{
+	height: 8px;
+	width: 60px;
+}
+
+.linev{
+	height: 60px;
+	width: 8px;
+}
+
+.line:hover{
+	/* background-color: #ffa8a8; */
+	background-color: rgb(69, 143, 101);
+}
+
+.line-active{
+	background-color: #373737;
+}
+
+button.play{
+	margin-top: 50px;
+	width: 100px;
+}
+
+.play {
+	align-items: center;
+	appearance: none;
+	background-color: #1899D6;
+	border: solid transparent;
+	border-radius: 16px;
+	border-width: 0 0 4px;
+	box-sizing: border-box;
+	color: #FFFFFF;
+	cursor: pointer;
+	display: inline-block;
+	font-family: din-round,sans-serif;
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: .8px;
+	line-height: 20px;
+	margin: 0;
+	outline: none;
+	overflow: visible;
+	padding: 13px 16px;
+	text-align: center;
+	text-transform: uppercase;
+	touch-action: manipulation;
+	transform: translateZ(0);
+	/* transition: filter .2s; */
+	user-select: none;
+	-webkit-user-select: none;
+	vertical-align: middle;
+	white-space: nowrap;
+	width: 100%;
+  }
+  
+  .play:after {
+	background-clip: padding-box;
+	background-color: #1CB0F6;
+	border: solid transparent;
+	border-radius: 16px;
+	border-width: 0 0 4px;
+	bottom: -4px;
+	content: "";
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: -1;
+  }
+  
+  .play:focus {
+	user-select: auto;
+  }
+  
+  .play:hover:not(:disabled) {
+	filter: brightness(1.1);
+	-webkit-filter: brightness(1.1);
+  }
+  
+  .play:disabled {
+	cursor: auto;
+  }
+
