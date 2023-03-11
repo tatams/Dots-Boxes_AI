@@ -1,4 +1,3 @@
-// import swal from "sweetalert";
 var boxes = [];
 var turn = true;
 var you = 0;
@@ -6,7 +5,6 @@ var comp = 0;
 var m ;
 var n ;
 let h ;
-
 
 const tool = document.querySelector(".tool");
 const newgame = tool.querySelector(".newgame");
@@ -46,8 +44,8 @@ function init(size){
 	
 	
 	if(board_size=="3x3"){
-		m=2;
-		n=2;
+		m=3;
+		n=3;
 	}
 	else if(board_size=="5x5"){
 		m=5;
@@ -57,7 +55,11 @@ function init(size){
 		m=7;
 		n=7;
 	}
-	h = 2 * (m - 1) * (n - 1);
+	// h = 2 * (m-1) * (n-1);
+	var all_case = 2 * ( m * (n + 1)) ; // จำนวน case ทั้งหมด
+	h = log2(all_case);
+
+	console.log("h"+boxes.length);
 	var offset = 60;
 
 	var sx= sx = window.innerWidth/2 - (m*offset)/2,
@@ -142,6 +144,11 @@ function applyEvents(h){
 	});
 }
 
+function log2(n){
+	return (n==1)? 0 : 1 + log2(n/2);
+}
+
+
 function acquire(id){
 
 	var color;
@@ -200,36 +207,36 @@ function computer(depth, nodeIndex, isMax, boxes, h){
 		}
 
 		//ใหม่
-		// console.log("depth : "+depth);
-		// for(j=0;j<depth+1;j++){
-		// 	if (isMax) {
-		// 		console.log("computerMax");
-		// 		play = computerSelect(Math.max(computer(depth + 1, nodeIndex * 2, false, boxes, h), computer(depth + 1, nodeIndex * 2 + 1, false, boxes, h)));
-		// 	}
-		// 	// Else (If current move is Minimizer), find the minimum
-		// 	// attainable value
-		// 	else{
-		// 		console.log("computerMin");
-		// 		play = Math.min(computer(depth + 1, nodeIndex * 2, true, boxes, h), computer(depth + 1, nodeIndex * 2 + 1, true, boxes, h));
-		// 	}
+		console.log("depth : "+depth);
+		for(j=0;j<depth+1;j++){
+			if (isMax) {
+				console.log("computerMax");
+				play = computerSelect(Math.max(computer(depth + 1, nodeIndex * 2, false, boxes, h), computer(depth + 1, nodeIndex * 2 + 1, false, boxes, h)));
+			}
+			// Else (If current move is Minimizer), find the minimum
+			// attainable value
+			else{
+				console.log("computerMin");
+				play = Math.min(computer(depth + 1, nodeIndex * 2, true, boxes, h), computer(depth + 1, nodeIndex * 2 + 1, true, boxes, h));
+			}
 			
-		// }
-		// return play
+		}
+		return play
 
-		//เก่า
-		// If current move is maximizer, find the maximum attainable
-		// value
-		if (isMax) {
-			console.log("computerMax");
+		// //เก่า
+		// // If current move is maximizer, find the maximum attainable
+		// // value
+		// if (isMax) {
+		// 	console.log("computerMax");
 			
-			return computerSelect(Math.max(computer(depth + 1, nodeIndex * 2, false, boxes, h), computer(depth + 1, nodeIndex * 2 + 1, false, boxes, h)));
-		}
-		// Else (If current move is Minimizer), find the minimum
-		// attainable value
-		else{
-			console.log("computerMin");
-			return Math.min(computer(depth + 1, nodeIndex * 2, true, boxes, h), computer(depth + 1, nodeIndex * 2 + 1, true, boxes, h));
-		}
+		// 	return computerSelect(Math.max(computer(depth + 1, nodeIndex * 2, false, boxes, h), computer(depth + 1, nodeIndex * 2 + 1, false, boxes, h)));
+		// }
+		// // Else (If current move is Minimizer), find the minimum
+		// // attainable value
+		// else{
+		// 	console.log("computerMin");
+		// 	return Math.min(computer(depth + 1, nodeIndex * 2, true, boxes, h), computer(depth + 1, nodeIndex * 2 + 1, true, boxes, h));
+		// }
 			
 
 }
