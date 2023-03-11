@@ -1,16 +1,40 @@
+// import swal from "sweetalert";
 var boxes = [];
 var turn = true;
 var you = 0;
 var comp = 0;
-const tool = document.querySelector(".tool");
-const newgame = tool.querySelector(".newgame");
 var m ;
 var n ;
 let h ;
 
+
+const tool = document.querySelector(".tool");
+const newgame = tool.querySelector(".newgame");
+const body = document.querySelector("body");
+const game = document.querySelector(".game");
+const option = document.querySelector(".option");
 newgame.addEventListener("click",function(){
+	console.log("click");
+	Swal.fire({
+		title: 'New Game?',
+		// text: "You won't be able to revert this!",
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes'
+	  }).then((result) => {
+		if (result.isConfirmed) {
+			isConfirmed();
+		}
+	  });
     
 });
+function isConfirmed(){
+	option.classList.remove("hind");
+    game.classList.add("hind");
+	body.style.backgroundColor = "#96d2be";
+}
 
 function init(size){
 	
