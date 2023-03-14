@@ -5,6 +5,7 @@ var comp = 0;
 var m ;
 var n ;
 let h ;
+let all_case ;
 
 const tool = document.querySelector(".tool");
 const newgame = tool.querySelector(".newgame");
@@ -44,8 +45,8 @@ function init(size){
 	
 	
 	if(board_size=="3x3"){
-		m=3;
-		n=3;
+		m=2;
+		n=2;
 	}
 	else if(board_size=="5x5"){
 		m=5;
@@ -56,10 +57,10 @@ function init(size){
 		n=7;
 	}
 	// h = 2 * (m-1) * (n-1);
-	var all_case = 2 * ( m * (n + 1)) ; // จำนวน case ทั้งหมด
-	h = log2(all_case);
+	all_case = 2 * ( m * (n + 1)) ; // จำนวน case ทั้งหมด
+	h =  Math.floor(Math.log2(all_case));
 
-	console.log("h"+boxes.length);
+	console.log("h"+h);
 	var offset = 60;
 
 	var sx= sx = window.innerWidth/2 - (m*offset)/2,
@@ -144,8 +145,8 @@ function applyEvents(h){
 	});
 }
 
-function log2(n){
-	return (n==1)? 0 : 1 + log2(n/2);
+function log2(r){
+	return (r==1)? 0 : 1 + log2(r/2);
 }
 
 
@@ -168,13 +169,33 @@ function acquire(id){
 
 	var full = true;
 	for(var i=boxes.length-1; i>=0; i--){
-		if(boxes[i] != full){
+		if(boxes[i] != "full"){
 			full = false;
 			break;
 		}
 	}
 
-	if(full) alert(((you>comp) ? "You": "AI") + " won");
+	if(full){
+		var winner;
+		if(you>comp){
+			winner = "You won"
+		}
+		else if(you=comp){
+			winner ="Draw"
+		}
+		else{
+			winner = "AI won"
+		}
+		Swal.fire({
+			title: winner,
+			showClass: {
+			  popup: 'animate__animated animate__fadeInDown'
+			},
+			hideClass: {
+			  popup: 'animate__animated animate__fadeOutUp'
+			}
+		  })
+	};
 }
 
 
@@ -204,11 +225,12 @@ function computer(depth, nodeIndex, isMax, boxes, h){
 			console.log("computer");
 			console.log("depth :"+depth,"nodeIndex :"+nodeIndex,"boxes :"+boxes,"h :"+h);
 			return boxes[nodeIndex];
+			// return acquire();
 		}
 
 		//ใหม่
 		console.log("depth : "+depth);
-		for(j=0;j<depth+1;j++){
+		for(j=0;j<depth || depth==0;j++){
 			if (isMax) {
 				console.log("computerMax");
 				play = computerSelect(Math.max(computer(depth + 1, nodeIndex * 2, false, boxes, h), computer(depth + 1, nodeIndex * 2 + 1, false, boxes, h)));

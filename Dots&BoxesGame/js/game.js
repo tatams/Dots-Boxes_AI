@@ -20,8 +20,8 @@ function init(size){
 	var n ;
 	
 	if(board_size=="3x3"){
-		m=3;
-		n=3;
+		m=2;
+		n=2;
 	}
 	else if(board_size=="5x5"){
 		m=5;
@@ -134,14 +134,45 @@ function acquire(id){
 	$(".player1").html('<i class="fa-solid fa-robot"></i> AI : ' + comp);
 
 	var full = true;
+	console.log("-------------------------")
+	console.log("id:"+id)
+	console.log("boxes[id]:"+boxes[id])
+	
+	console.log("-------------------------")
 	for(var i=boxes.length-1; i>=0; i--){
-		if(boxes[i] != full){
+		console.log("i:"+i)
+		console.log("boxes[i]:"+boxes[i])
+		if(boxes[i] != "full"){
 			full = false;
 			break;
 		}
 	}
+	console.log("full:"+full)
+	console.log("-------------------------")
+	
 
-	if(full) alert(((you>comp) ? "You": "AI") + " won");
+
+	if(full){
+		var winner;
+		if(you>comp){
+			winner = "You won"
+		}
+		else if(you=comp){
+			winner ="Draw"
+		}
+		else{
+			winner = "AI won"
+		}
+		Swal.fire({
+			title: winner,
+			showClass: {
+			  popup: 'animate__animated animate__fadeInDown'
+			},
+			hideClass: {
+			  popup: 'animate__animated animate__fadeOutUp'
+			}
+		  })
+	};
 }
 
 
