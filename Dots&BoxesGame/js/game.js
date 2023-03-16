@@ -2,12 +2,34 @@ var boxes = [];
 var turn = true;
 var you = 0;
 var comp = 0;
+
 const tool = document.querySelector(".tool");
 const newgame = tool.querySelector(".newgame");
-
+const body = document.querySelector("body");
+const game = document.querySelector(".game");
+const option = document.querySelector(".option");
 newgame.addEventListener("click",function(){
+	console.log("click");
+	Swal.fire({
+		title: 'New Game?',
+		// text: "You won't be able to revert this!",
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes'
+	  }).then((result) => {
+		if (result.isConfirmed) {
+			isConfirmed();
+		}
+	  });
     
 });
+function isConfirmed(){
+	option.classList.remove("hind");
+    game.classList.add("hind");
+	body.style.backgroundColor = "#96d2be";
+}
 
 function init(size){
 	
@@ -20,8 +42,8 @@ function init(size){
 	var n ;
 	
 	if(board_size=="3x3"){
-		m=2;
-		n=2;
+		m=3;
+		n=3;
 	}
 	else if(board_size=="5x5"){
 		m=5;
@@ -39,7 +61,6 @@ function init(size){
 	var html = "";
 	$("#app").html(html);
 	var c = 0;
-	
 	for(var j=0; j<m; j++){
 		for(var i=0; i<n; i++){
 
@@ -88,7 +109,6 @@ function init(size){
 
 	//right-bottom most dot
 	html += `<div class="dot" style="z-index=${i}; left:${sx+m*offset-5}px; top:${sy+n*offset-5}px" data-active="false"></div>`
-	
 	//append to dom
 	$("#app").html(html);
 	applyEvents();
@@ -157,7 +177,7 @@ function acquire(id){
 		if(you>comp){
 			winner = "You won"
 		}
-		else if(you=comp){
+		else if(you==comp){
 			winner ="Draw"
 		}
 		else{

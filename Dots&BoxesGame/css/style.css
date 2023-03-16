@@ -23,7 +23,7 @@ body {
 
 .container{
 	padding-top: 10px;
-	
+	user-select: none;
 }
 
 .option{

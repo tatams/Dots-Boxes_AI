@@ -168,7 +168,7 @@ function acquire(id){  //เปลี่ยนสีเส้นหากมี�
 		if(you>comp){
 			winner = "You won"
 		}
-		else if(you=comp){
+		else if(you==comp){
 			winner ="Draw"
 		}
 		else{

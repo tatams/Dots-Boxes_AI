@@ -180,7 +180,7 @@ function acquire(id){
 		if(you>comp){
 			winner = "You won"
 		}
-		else if(you=comp){
+		else if(you==comp){
 			winner ="Draw"
 		}
 		else{
