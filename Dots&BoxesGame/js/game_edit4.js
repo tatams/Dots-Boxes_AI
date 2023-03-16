@@ -29,6 +29,10 @@ function isConfirmed(){
 	option.classList.remove("hind");
     game.classList.add("hind");
 	body.style.backgroundColor = "#96d2be";
+	you = 0;
+	comp = 0;
+	$(".player2").html('<i class="fa-solid fa-splotch"></i> You : ' + you);
+	$(".player1").html('<i class="fa-solid fa-robot"></i> AI : ' + comp);
 }
 
 function init(size){
@@ -40,24 +44,24 @@ function init(size){
 	let board_size = size;
 	var m ;
 	var n ;
-	//เลือกขนาด
+	
 	if(board_size=="3x3"){
+		m=2;
+		n=2;
+	}
+	else if(board_size=="5x5"){
 		m=3;
 		n=3;
 	}
-	else if(board_size=="5x5"){
-		m=5;
-		n=5;
-	}
 	else if(board_size=="7x7"){
-		m=7;
-		n=7;
+		m=4;
+		n=4;
 	}
 
-	var offset = 60;
+	var offset = 70;
 
 	var sx= sx = window.innerWidth/2 - (m*offset)/2,
-	sy = offset*6.5;
+	sy = offset*5.5;
 	var html = "";
 	$("#app").html(html);
 	var c = 0;
@@ -83,7 +87,7 @@ function init(size){
 				<div class="line linev" data-line-1="${c}" data-line-2="${c-1}" style="z-index=${i}; left:${x}px; top:${y}px" data-active="false"></div>
 				`;			
 			}
-			boxes.push(0);
+			boxes.push({count:0,line:[]});
 			c++;
 		}
 	}
@@ -116,29 +120,36 @@ function init(size){
 	applyEvents();
 }
 
-function applyEvents(){ //เปลี่ยนสีพื้นหลังหากมีการคลิก
+function applyEvents(){
 	$("div.line").unbind('click').bind('click', function(){
 
 		var id1 = parseInt($(this).attr("data-line-1"));
 		var id2 = parseInt($(this).attr("data-line-2"));  
-		console.log("id1=",id1, " id2=",id2);
+
+		console.log("id1=",id1, " id2=",id2)
+		boxes[id1].line.push(id2);
+
 		if(checkValid(this) && turn){	
 			var a = false, b = false;
 
 			if(id1 >= 0) var a = addValue(id1);
 			if(id2 >= 0) var b = addValue(id2);
+
+			
+			console.log(boxes);
+
 			$(this).addClass("line-active");
 			$(this).css("background-color","rgb(27, 85, 52)");	
 			$(this).attr("data-active", "true");
 
 			if(a === false && b === false){
-				computer(boxes.length-1,true);	
+				computer();	
 			}			
 		}	
 	});
 }
 
-function acquire(id){  //เปลี่ยนสีเส้นหากมีการคลิก และบวกคะแนน
+function acquire(id){
 
 	var color;
 	if(turn){
@@ -162,73 +173,122 @@ function acquire(id){  //เปลี่ยนสีเส้นหากมี�
 			break;
 		}
 	}
-	//เช็คว่าเต็มยัง
+
 	if(full){
-		var winner;
+		var winner,gifURL,text;
 		if(you>comp){
-			winner = "You won"
+			winner = "You won!"
+			gifURL ="https://thenewdaily.com.au/wp-content/uploads/2023/02/1676249684-Dumb-Ways-to-Die.gif"
+			text ="You did it!"
 		}
-		else if(you=comp){
-			winner ="Draw"
+		else if(you==comp){
+			winner ="Draw!"
+			gifURL = "https://aml.ca/wp-content/uploads/2013/12/dumbOpenDoor.gif"
+			text ="Once more... You can do it!"
+
 		}
 		else{
-			winner = "AI won"
+			winner = "You lose"
+			gifURL = "https://i.pinimg.com/originals/13/1b/7b/131b7b3bc33d168b9140ab2a3caa2e08.gif"
+			text ="Never give up"
 		}
 		Swal.fire({
 			title: winner,
-			showClass: {
-			  popup: 'animate__animated animate__fadeInDown'
-			},
-			hideClass: {
-			  popup: 'animate__animated animate__fadeOutUp'
-			}
-		  })
+			text: text,
+			imageUrl: gifURL,
+			backdrop: `rgba(0,0,123,0.4)`,
+			imageHeight: 200,
+			imageAlt: 'Custom image',
+			confirmButtonText: 'Play Again',
+		}).then((result) => {
+		  if (result.isConfirmed) {
+			  isConfirmed();
+		  }
+  });
+  function isConfirmed(){
+	  option.classList.remove("hind");
+	  game.classList.add("hind");
+	  body.style.backgroundColor = "#96d2be";
+	  you = 0;
+	  comp = 0;
+		$(".player2").html('<i class="fa-solid fa-splotch"></i> You : ' + you);
+		$(".player1").html('<i class="fa-solid fa-robot"></i> AI : ' + comp);
+  }
 	};
 }
 
 
 function addValue(id){
-	boxes[id]++;
-	console.log(boxes[id],id);
-	if(boxes[id] === 4){
+	boxes[id].count++;
+	if(boxes[id].count === 4){
 		acquire(id);
 		return true;
 	}
 	return false;
 }
 
+
 function checkValid(t){
 	return($(t).attr("data-active") === "false");
 }
 
+function computer(){
+	turn = false;
+	$("#turn").text("Turn : " + "AI");acquire
 
-
-function selectBox(){
+	setTimeout(function(){		
+		var bestScore = -Infinity;
+		var bestMove;
+		for (var i = 0; i < boxes.length; i++) {
+			if(boxes[i].count === 0){
+				boxes[i].count = 1;
+				var score = minimax(boxes, 0, false);
+				boxes[i].count = 0;
+				if (score > bestScore) {
+					bestScore = score;
+					bestMove = i;
+					console.log("best=",bestMove);
+				}
+			}
+		}
+		computerSelect(bestMove);
+	}, 500);
 
 }
 
-function minimax(depth, isMaximizing){
-	if(depth === 0){
-		return 0;
-	} 
-	if(isMaximizing){
-		var bestScore = -Infinity;
+function minimax(boxes, depth, isMaximizing) {
+	if(depth === 3){
+		var score = 0;
 		for(var i=0; i<boxes.length; i++){
-			if(boxes[i] < 4){
-				boxes[i]++;
-				var score = minimax(depth-1, false);
-				boxes[i]--;
+			if(boxes[i].count == 1){
+				score += 1;
+			}else if(boxes[i].count == 2){
+				score -= 100;
+			}else if(boxes[i].count == 3){
+				score += 100;
+			}
+		}
+		return score;
+	}
+
+	if (isMaximizing) {
+		var bestScore = -Infinity;
+		for (var i = 0; i < boxes.length; i++) {
+			if(boxes[i].count === 0){
+				boxes[i].count = 1;
+				var score = minimax(boxes, depth+1, false);
+				boxes[i].count = 0;
 				bestScore = Math.max(score, bestScore);
 			}
 		}
 		return bestScore;
-	}else{
+	} else {
 		var bestScore = Infinity;
-		for(var i=0; i<boxes.length; i++){
-			if(boxes[i] < 4){
-				boxes[i]++;
-				var score = minimax(depth-1, true);
-				boxes[i]--;
+		for (var i = 0; i < boxes.length; i++) {
+			if(boxes[i].count === 0){
+				boxes[i].count = 2;
+				var score = minimax(boxes, depth+1, true);
+				boxes[i].count = 0;
 				bestScore = Math.min(score, bestScore);
 			}
 		}
@@ -236,52 +296,52 @@ function minimax(depth, isMaximizing){
 	}
 }
 
-function computer(){
-	turn = false;
-	$("#turn").text("Turn - " + "AI");
-	var bestScore = -Infinity; 
-	var bestMove;
-	for(var i=0; i<boxes.length; i++){
-		if(boxes[i] < 4){
-			boxes[i]++;
-			console.log(boxes.length-1);
-			var score = minimax(boxes.length-1, false); 
-			
-			boxes[i]--;
-			if(score > bestScore){ //หากบอทคะแนนมากกว่าคน
-				bestScore = score;
-				bestMove = i;
-			}
-		}
-	}
-	console.log("bestMove", bestMove);
-	computerSelect(bestMove);
-}
 
 function computerSelect(id,valid=true){
 	console.log("Box " + id);
+	if(id == undefined){
+		for(var i=0; i<boxes.length; i++){
+			if(boxes[i].count != 2){
+				if(boxes[i].count == 3){
+					id=i;
+				}
+				else if(boxes[i].count < 2){
+					id=i;
+				}
+			}
+		}
+	}
+	if(id == undefined){
+		for(var i=0; i<boxes.length; i++){
+			if(boxes[i].count <4 ){
+				id=i;
+			}
+		}
+	}
+
 	if(!valid){
 		turn = true;
 		$("#turn").text("Turn - " + "You");
 	}
 	$("div.line[data-line-1='"+id+"'], div.line[data-line-2='"+id+"']").each(function(i, v){		
 		if(!$(v).hasClass("line-active")){
-			
 			var id1 = parseInt($(v).attr("data-line-1"));
 			var id2 = parseInt($(v).attr("data-line-2"));  
-
-			console.log("----- " + turn);
+			boxes[id1].line.push(id2);
+			//console.log("----- " + turn);
 
 			if(checkValid(v) && turn === false){
-				console.log("ai");
+				//console.log("-----");
 				if(id1 >= 0) var a = addValue(id1);
 				if(id2 >= 0) var b = addValue(id2);
 				$(v).addClass("line-active");
 				$(this).css("background-color","rgb(209, 53, 25)");	
 				$(v).attr("data-active", "true");
 				
+				console.log("idAi=",id1,id2)
+				
+
 				if(a === true || b === true){
-					console.log("ai1=",id1, " ai2=",id2);
 					computer();	
 				}else{
 					turn = true;
@@ -291,8 +351,3 @@ function computerSelect(id,valid=true){
 		}
 	});
 }
-
-function random(min, max){        
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-

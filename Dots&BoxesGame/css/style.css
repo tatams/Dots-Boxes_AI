@@ -150,12 +150,12 @@ h2{
 }
 
 .box{
-	width: 60px;
-	height: 60px;
+	width: 70px;
+	height: 70px;
 	position: absolute;
 	/* background-color: white; */
 	background-color: rgb(255, 240, 156);
-	line-height: 60px;
+	line-height: 70px;
 }
 
 
@@ -181,11 +181,11 @@ h2{
 
 .lineh{
 	height: 8px;
-	width: 60px;
+	width: 70px;
 }
 
 .linev{
-	height: 60px;
+	height: 70px;
 	width: 8px;
 }
 
